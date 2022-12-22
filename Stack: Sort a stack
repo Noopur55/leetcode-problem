@@ -1,0 +1,31 @@
+#include <bits/stdc++.h> 
+void sortedInsert(stack<int> &stack,int num){
+    //base case either empty or top<num pushstack
+    if(stack.empty() || stack.top()<num){
+        stack.push(num);
+        return;
+    }
+        
+        int element=stack.top();
+        stack.pop();
+        //recursive
+        sortedInsert(stack,num);
+        //along with the element which we have separted
+        stack.push(element);
+    
+}
+void sortStack(stack<int> &stack)
+{
+	//base case
+    if(stack.empty()){
+        return;
+    }
+    //take the top
+    int num=stack.top();
+    stack.pop();
+    //recursively do it
+    sortStack(stack);
+    //for sorting the stack
+    sortedInsert(stack,num);
+    
+}
