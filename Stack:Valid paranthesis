@@ -1,0 +1,50 @@
+Intuition
+We can use a stack to track for paranthesis.
+valid paranthesis will always have one opening and one close and that too balanced. Example: This is valid-->[{()}], but this is not valid{(})
+
+Approach
+if we encounter a opening paranthesis in string then add to stack if it's a close then check with the top character(basicaly matching paranthesis only) of string and pop it.
+Atlast if we will have empty stack then it's valid one else not.
+
+Complexity
+Time complexity:
+O(N) as we are traversing upto total length
+
+Space complexity:
+O(N) as we are using stack to keep track of paranthesis
+
+Code
+class Solution {
+public:
+    bool isValid(string s) {
+
+        stack<char> st;
+        for(int i=0;i<s.length();i++){
+            char ch=s[i];
+            //if opening then stack push
+            if(ch=='{' || ch=='(' || ch=='['){
+                st.push(ch);
+            }
+            //if closing then stack top check and pop
+            else{
+                if(!st.empty()){
+                    char top=st.top();
+                    if((ch==')' && top=='(')||(ch=='}' && top=='{')||(ch==']' && top=='[')){
+                        st.pop();
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                //if stack is not empty still
+                else{
+                    return false;
+                }
+            }
+        }
+        //check for stack now if empty then valid else not
+        if(st.empty()) return true;
+        else return false;
+        
+    }
+};
