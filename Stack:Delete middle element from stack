@@ -1,0 +1,25 @@
+#include <bits/stdc++.h> 
+void getresultStack(stack<int>&inputStack, int cnt, int size){
+    //base case
+    if(cnt==size/2) {
+        inputStack.pop();
+        return;
+    }
+    //get the top element 
+    int num=inputStack.top();
+    //for now delete it just to traverse next element
+    inputStack.pop();
+    
+    //recursive call
+    getresultStack(inputStack,cnt+1,size);
+    //add the num to have result
+    inputStack.push(num);
+    
+}
+void deleteMiddle(stack<int>&inputStack, int N){
+	
+   // Write your code here
+    int cnt=0;
+    getresultStack(inputStack, cnt, N);
+   
+}
