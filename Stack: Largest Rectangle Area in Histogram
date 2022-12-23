@@ -1,0 +1,78 @@
+-------------------Approach 1-----------------------------------------------
+
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n=heights.size();
+        stack<int> st;
+        vector<int> leftsmall(n);
+        vector<int> rightsmall(n);
+
+        //for left small 
+        for(int i=0;i<n;i++){
+            while(!st.empty() && heights[st.top()]>=heights[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                leftsmall[i]=0; //left boundary for current element
+            }
+            else{
+                leftsmall[i]=st.top()+1;
+            }
+            st.push(i);
+        }
+        //clear stack to reuse
+        while(!st.empty()) st.pop();
+
+        //for right small 
+        for(int i=n-1;i>=0;i--){
+            while(!st.empty() && heights[st.top()]>=heights[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                rightsmall[i]=n-1; //right boundary for current element
+            }
+            else{
+                rightsmall[i]=st.top()-1;
+            }
+            st.push(i);
+        }
+
+        //traverse the height vactor and perform the max area operation
+        int maxArea=INT_MIN;
+        for(int i=0;i<n;i++){
+            maxArea=max(maxArea,heights[i]*(rightsmall[i]-leftsmall[i]+1));
+        }
+        return maxArea;
+        
+    }
+};
+
+
+
+
+--------------------------Approach 2------------------------------------
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+
+        stack<int> st;
+        int maxArea=0;
+        int n=heights.size();
+        for(int i=0;i<=n;i++){
+            while(!st.empty() && (i==n || heights[st.top()]>=heights[i])){
+                int bar=heights[st.top()];
+                st.pop();
+                int width;
+                if(st.empty()) width=i;
+                else width=i-st.top()-1;
+                maxArea=max(maxArea, width*bar);
+            }
+            st.push(i);
+        }
+        return maxArea;
+        
+    }
+};
