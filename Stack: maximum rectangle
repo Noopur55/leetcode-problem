@@ -1,0 +1,63 @@
+#include<stack>
+int largestRectangleArea(vector<int> &arr, int n) {
+        n=arr.size();
+        stack<int> st;
+        vector<int> leftsmall(n);
+        vector<int> rightsmall(n);
+
+        //for left small 
+        for(int i=0;i<n;i++){
+            while(!st.empty() && arr[st.top()]>=arr[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                leftsmall[i]=0; //left boundary for current element
+            }
+            else{
+                leftsmall[i]=st.top()+1;
+            }
+            st.push(i);
+        }
+        //clear stack to reuse
+        while(!st.empty()) st.pop();
+
+        //for right small 
+        for(int i=n-1;i>=0;i--){
+            while(!st.empty() && arr[st.top()]>=arr[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                rightsmall[i]=n-1; //right boundary for current element
+            }
+            else{
+                rightsmall[i]=st.top()-1;
+            }
+            st.push(i);
+        }
+
+        //traverse the height vactor and perform the max area operation
+        int maxArea=0;
+        for(int i=0;i<n;i++){
+            maxArea=max(maxArea,arr[i]*(rightsmall[i]-leftsmall[i]+1));
+        }
+        return maxArea;
+        
+}
+
+int maximalAreaOfSubMatrixOfAll1(vector<vector<int>> &mat, int n, int m){
+    
+    int area=largestRectangleArea(mat[0],m);
+    for(int i=1;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(mat[i][j]!=0){
+                mat[i][j]=mat[i][j] + mat[i-1][j-1];
+            }
+            else{
+                mat[i][j]=0;
+            }
+        }
+        int newarea=largestRectangleArea(mat[i],m);
+        area=max(area,newarea);
+    }
+    return area;
+}
